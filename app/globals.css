@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Amiri", serif;
+  --font-body: "Work Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FBFCFE;
+  color: #10131A;
+}
+
+/* Signature arch motif — echoes the academy's mihrab logo mark.
+   Used to frame images, cap cards, and divide sections. */
+.arch-clip {
+  clip-path: url(#arch-clip-path);
+}
+
+.arch-clip-wide {
+  clip-path: url(#arch-clip-path-wide);
+}
+
+.arch-divider {
+  width: 100%;
+  height: 34px;
+  display: block;
+}
+
+/* Numbered step marker used only for the true admissions sequence */
+.step-count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid #C6942F;
+  outline-offset: 3px;
+}
