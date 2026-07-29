@@ -5,7 +5,12 @@ import PlaceholderNote from "@/components/PlaceholderNote";
 import GeoPattern from "@/components/GeoPattern";
 import { mosquePhotos, learningPhotos } from "@/lib/stock-images";
 
-export const metadata: Metadata = { title: "About Us | Abu Taymeeyah Academy" };
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Learn about Abu Taymeeyah Academy's mission, values, and approach to Qur'anic memorization, Tajweed mastery, and Islamic education.",
+  alternates: { canonical: "/about" },
+};
 
 const values = ["Excellence", "Sincerity", "Discipline", "Compassion", "Integrity", "Lifelong Learning"];
 
@@ -57,9 +62,9 @@ export default function AboutPage() {
       {/* Director's Welcome Message */}
       <section className="bg-mist py-20">
         <div className="mx-auto max-w-5xl px-5 grid lg:grid-cols-[auto_1fr] gap-10 items-start">
-          <div className="mx-auto lg:mx-0 h-28 w-28 arch-clip bg-navy/10 border border-navy/15 flex items-center justify-center shrink-0">
+          {/* <div className="mx-auto lg:mx-0 h-28 w-28 arch-clip bg-navy/10 border border-navy/15 flex items-center justify-center shrink-0">
             <span className="text-[11px] font-mono text-navy/40 text-center px-2">Director&apos;s photo placeholder</span>
-          </div>
+          </div> */}
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.25em] text-gold-dim">Director&apos;s Welcome Message</p>
             <div className="mt-4 space-y-4 text-navy/75 leading-relaxed">
@@ -130,7 +135,7 @@ export default function AboutPage() {
       </section>
 
       {/* Meet Our Teachers */}
-      <section className="bg-mist py-20">
+      {/* <section className="bg-mist py-20">
         <div className="mx-auto max-w-6xl px-5">
           <SectionHeading eyebrow="Our Instructors" title="Meet Our Teachers" align="center" />
           <div className="mt-4 text-center">
@@ -151,7 +156,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

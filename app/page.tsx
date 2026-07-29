@@ -147,7 +147,7 @@ export default function HomePage() {
               </div>
               <div>
                 <p className="font-mono text-xs uppercase tracking-widest text-gold-light">Registration Deadline</p>
-                <p className="mt-1 text-sm text-white/80">To be confirmed — placeholder</p>
+                <p className="mt-1 text-sm text-white/80">ongoing</p>
               </div>
               <div>
                 <p className="font-mono text-xs uppercase tracking-widest text-gold-light">Payment Options</p>
@@ -167,9 +167,9 @@ export default function HomePage() {
       {/* TESTIMONIALS */}
       <section className="mx-auto max-w-6xl px-5 py-20">
         <SectionHeading eyebrow="What families say" title="Testimonials" align="center" />
-        <div className="mt-4 text-center">
+        {/* <div className="mt-4 text-center">
           <PlaceholderNote>Real parent and student testimonials to be added by the academy</PlaceholderNote>
-        </div>
+        </div> */}
         <div className="mt-10 grid sm:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-sm border border-navy/10 bg-white p-6">

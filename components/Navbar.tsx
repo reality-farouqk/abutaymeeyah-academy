@@ -9,6 +9,7 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/programmes", label: "Programmes" },
   { href: "/admissions", label: "Admissions" },
+  { href: "/admissions/status", label: "Check Status" },
   { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ];
@@ -29,7 +30,7 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-7">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -44,7 +45,7 @@ export default function Navbar() {
         <div className="hidden lg:block">
           <Link
             href="/enroll"
-            className="inline-flex items-center rounded-sm bg-gold px-5 py-2.5 text-sm font-semibold text-navy-deep hover:bg-gold-light transition-colors focus-ring"
+            className="inline-flex items-center rounded-sm bg-gold px-5 py-2.5 text-sm font-semibold text-navy-deep hover:bg-gold-light transition-colors focus-ring shadow-sm"
           >
             Enroll Now
           </Link>
@@ -60,7 +61,7 @@ export default function Navbar() {
             {open ? (
               <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
             ) : (
-              <path d="M3 6h18M3 12h18M3 18h18" strokeLinecap="round" />
+              <path d="M3 3h18M3 12h18M3 18h18" strokeLinecap="round" />
             )}
           </svg>
         </button>

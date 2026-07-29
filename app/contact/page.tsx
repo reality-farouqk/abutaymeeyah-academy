@@ -6,7 +6,12 @@ import GeoPattern from "@/components/GeoPattern";
 import ContactForm from "@/components/ContactForm";
 import { mosquePhotos } from "@/lib/stock-images";
 
-export const metadata: Metadata = { title: "Contact | Abu Taymeeyah Academy" };
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with Abu Taymeeyah Academy by phone, WhatsApp, or email to ask about programmes, schedules, or admissions.",
+  alternates: { canonical: "/contact" },
+};
 
 export default function ContactPage() {
   return (
@@ -50,22 +55,22 @@ export default function ContactPage() {
             </div>
             <div>
               <p className="font-mono text-xs uppercase tracking-widest text-gold-dim">Office Hours</p>
-              <p className="mt-1 text-navy/60 text-sm">Placeholder — to be confirmed</p>
+              <p className="mt-1 text-navy/60 text-sm">24/7</p>
             </div>
-            <div>
+            {/* <div>
               <p className="font-mono text-xs uppercase tracking-widest text-gold-dim">Address</p>
               <p className="mt-1 text-navy/60 text-sm">Placeholder — physical address to be provided</p>
-            </div>
-            <PlaceholderNote>Google Maps location and social media links to be added</PlaceholderNote>
+            </div> */}
+            {/* <PlaceholderNote>Google Maps location and social media links to be added</PlaceholderNote> */}
           </div>
         </div>
 
         <div>
           <ContactForm />
-
+{/* 
           <div className="mt-6 aspect-[16/9] rounded-sm bg-mist border border-navy/10 flex items-center justify-center">
             <span className="text-xs font-mono text-navy/40">Google Map placeholder</span>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

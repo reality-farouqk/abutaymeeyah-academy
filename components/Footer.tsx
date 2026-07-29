@@ -58,7 +58,7 @@ export default function Footer() {
             <li>08037416047</li>
             <li>09123782303</li>
             <li className="break-all">abutaymeeyahinstitute@gmail.com</li>
-            <li className="text-white/50">Address — placeholder, to be provided</li>
+            {/* <li className="text-white/50">Address — placeholder, to be provided</li> */}
           </ul>
         </div>
       </div>

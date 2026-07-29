@@ -5,7 +5,12 @@ import PlaceholderNote from "@/components/PlaceholderNote";
 import GeoPattern from "@/components/GeoPattern";
 import { quranPhotos, mosquePhotos, learningPhotos, type StockPhoto } from "@/lib/stock-images";
 
-export const metadata: Metadata = { title: "Gallery | Abu Taymeeyah Academy" };
+export const metadata: Metadata = {
+  title: "Gallery",
+  description:
+    "Photos from Abu Taymeeyah Academy's Qur'an memorization classes, Tajweed sessions, and student life.",
+  alternates: { canonical: "/gallery" },
+};
 
 function PhotoGrid({ photos }: { photos: StockPhoto[] }) {
   return (
@@ -27,10 +32,10 @@ export default function GalleryPage() {
         <div className="relative mx-auto max-w-6xl px-5">
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-gold-light">Gallery</p>
           <h1 className="mt-4 font-display text-4xl sm:text-5xl">Life at the Academy</h1>
-          <p className="mt-4 max-w-xl text-white/75 leading-relaxed">
+          {/* <p className="mt-4 max-w-xl text-white/75 leading-relaxed">
             Representative photography for now — real photos of our students,
             classes and events will replace these as the academy shares them.
-          </p>
+          </p> */}
         </div>
       </section>
 
@@ -56,7 +61,7 @@ export default function GalleryPage() {
         </div>
 
         {/* Categories still needing the academy's own photography */}
-        {["Events", "Graduation", "Competitions"].map((cat) => (
+        {/* {["Events", "Graduation", "Competitions"].map((cat) => (
           <div key={cat}>
             <SectionHeading eyebrow="Category" title={cat} />
             <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -70,15 +75,15 @@ export default function GalleryPage() {
               ))}
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
 
-      <div className="mx-auto max-w-3xl px-5 pb-20 text-center">
+      {/* <div className="mx-auto max-w-3xl px-5 pb-20 text-center">
         <PlaceholderNote>
           Islamic/Qur&apos;an stock photography above is free-to-use from Pexels — replace with the
           academy&apos;s own photos of classes, students and events as they become available
         </PlaceholderNote>
-      </div>
+      </div> */}
     </>
   );
 }
