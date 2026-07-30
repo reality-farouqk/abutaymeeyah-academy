@@ -9,7 +9,7 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/programmes", label: "Programmes" },
   { href: "/admissions", label: "Admissions" },
-  { href: "/admissions/status", label: "Check Status" },
+  // { href: "/admissions/status", label: "Check Status" },
   { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ];

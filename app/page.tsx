@@ -61,10 +61,12 @@ export default function HomePage() {
 
           <div className="relative mx-auto w-full max-w-sm">
             <div className="relative aspect-[4/5] arch-clip bg-navy-light border border-gold/30 shadow-arch overflow-hidden">
-              <Image src="/flyer.jpg" alt="Qur'an stand with lantern, academy branding" fill className="object-cover" />
+              <Image src="/ustaz-abutaymeeyah.jpg" alt="Qur'an stand with lantern, academy branding" fill className="object-cover" />
             </div>
             <div className="absolute -bottom-5 -left-5 h-20 w-20 arch-clip bg-gold flex items-center justify-center">
+              <div className="arch-clip">
               <Image src="/logo.jpg" alt="Abu Taymeeyah Academy logo" width={48} height={48} className="object-contain" />
+              </div>
             </div>
           </div>
         </div>
@@ -165,11 +167,11 @@ export default function HomePage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="mx-auto max-w-6xl px-5 py-20">
+      {/* <section className="mx-auto max-w-6xl px-5 py-20">
         <SectionHeading eyebrow="What families say" title="Testimonials" align="center" />
-        {/* <div className="mt-4 text-center">
+        <div className="mt-4 text-center">
           <PlaceholderNote>Real parent and student testimonials to be added by the academy</PlaceholderNote>
-        </div> */}
+        </div>
         <div className="mt-10 grid sm:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-sm border border-navy/10 bg-white p-6">
@@ -182,7 +184,7 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* GALLERY PREVIEW */}
       <section className="bg-mist py-20">

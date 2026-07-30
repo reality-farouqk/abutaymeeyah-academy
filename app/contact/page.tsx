@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
-import PlaceholderNote from "@/components/PlaceholderNote";
+// import PlaceholderNote from "@/components/PlaceholderNote";
 import GeoPattern from "@/components/GeoPattern";
 import ContactForm from "@/components/ContactForm";
 import { mosquePhotos } from "@/lib/stock-images";
