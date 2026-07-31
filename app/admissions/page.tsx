@@ -107,9 +107,6 @@ export default function AdmissionsPage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-4 text-center text-xs text-navy/50">
-            A discounted Beginners Classes monthly plan (₦7,000/month) is available to students with Nigerian nationality — select it on the registration form.
-          </p>
         </div>
       </section>
 

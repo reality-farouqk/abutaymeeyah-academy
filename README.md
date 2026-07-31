@@ -90,6 +90,89 @@ potentially exposed — consider rotating the Flutterwave secret key from
 your Flutterwave dashboard (Settings → API) once you're ready to go live,
 so only the new key ever touches your deployed environment.
 
+## Admin access
+
+`/admin/registrations` (and its API, `/api/admin/registrations`) previously
+had **no authentication at all** — anyone with the URL could see every
+student's personal details and mark payments as paid. That's fixed:
+
+- `/admin/login` — a single-password login form.
+- `middleware.ts` — blocks every `/admin/*` page and `/api/admin/*` request
+  without a valid session, redirecting pages to the login form and
+  returning a plain 401 for API calls.
+- Sessions are a signed, `httpOnly` cookie (12-hour expiry) — not a plaintext
+  password sitting in a cookie, and not readable/forgeable from JavaScript.
+
+**Setup:** set `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` in `.env.local`
+(a working local default is already there — **change `ADMIN_PASSWORD` before
+deploying**). `ADMIN_SESSION_SECRET` should just stay a long random string;
+you never need to type or remember it.
+
+This is intentionally a single-password scheme, appropriate for one or two
+trusted staff sharing one login. If the academy later needs individual
+staff accounts, permission levels, or an audit trail of who changed what,
+that's the point to move to a real auth provider (Supabase Auth, Clerk,
+Auth.js) instead of extending this.
+
+## Data storage — please read before going live
+
+Student registrations currently live in `lib/registrations-store.ts`, which
+writes to a JSON file (`.data/registrations.json`) with an in-memory
+fallback if the filesystem write fails. **This will lose data in
+production.** Vercel (and most serverless hosts) run your app on a
+read-only filesystem — the JSON write will silently fail and fall back to
+an in-memory store that's wiped on every redeploy and isn't shared between
+serverless instances, so different requests can even see different data in
+the same minute.
+
+**Recommendation: [Neon](https://neon.tech)** (serverless Postgres).
+Reasoning for this app specifically:
+- Free tier that doesn't expire for a small site like this, with
+  scale-to-zero so an idle site costs nothing.
+- First-party Vercel integration — connects with a few clicks if this
+  deploys there, including automatic preview-branch databases per PR.
+- Plain Postgres — works with Prisma or Drizzle, both have solid Next.js
+  App Router support, and the SQL skills transfer anywhere later.
+
+Reasonable alternatives: **Supabase** (also Postgres; worth it instead if
+you'd like the admin login above eventually replaced with a real
+auth provider from the same vendor, since Supabase bundles auth + storage
+alongside the database) or **Turso** (SQLite at the edge; simplest mental
+model, generous free tier, best if global read latency ever matters more
+than relational features).
+
+This migration — swapping `registrations-store.ts`'s file I/O for real
+database queries — hasn't been done yet since it touches every place that
+reads/writes a registration (`create`, `verify`, `webhook`, the admin API).
+Happy to do it in a follow-up once you've picked a provider and created a
+project/database.
+
+## Contact form
+
+`components/ContactForm.tsx` previously didn't submit anywhere — `onSubmit`
+just called `preventDefault()`. It's now wired to `/api/contact`, which
+sends the message via [Resend](https://resend.com):
+
+- Server-side validation (name/email/message required, sane length limits).
+- A honeypot field to filter out the simplest bots, plus light per-IP rate
+  limiting (5 messages / 10 minutes) — the same best-effort approach used
+  for admin login, see the code comments for its limits.
+- The visitor's email is set as `replyTo`, so replying to the notification
+  email goes straight to them.
+
+**Setup:**
+1. Create a free account at [resend.com](https://resend.com) and generate
+   an API key.
+2. Set `RESEND_API_KEY` in `.env.local`.
+3. Leave `RESEND_FROM_EMAIL` and `CONTACT_TO_EMAIL` blank to start — it'll
+   send from Resend's shared `onboarding@resend.dev` address (works
+   immediately, no setup) to the academy's email already in
+   `lib/site-config.ts`.
+4. Once you have a real domain, verify it in the Resend dashboard and set
+   `RESEND_FROM_EMAIL` to something like
+   `"Abu Taymeeyah Academy <hello@yourdomain.com>"` — Resend rejects
+   sending from an unverified domain.
+
 ## SEO
 
 - **Domain:** `lib/site-config.ts` has a placeholder `SITE_URL` (no real domain

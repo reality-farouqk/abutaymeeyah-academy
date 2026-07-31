@@ -5,6 +5,7 @@ import SectionHeading from "@/components/SectionHeading";
 import PlaceholderNote from "@/components/PlaceholderNote";
 import GeoPattern from "@/components/GeoPattern";
 import { quranPhotos } from "@/lib/stock-images";
+import { PROGRAMMES } from "@/lib/programmes";
 
 export const metadata: Metadata = {
   title: "Programmes",
@@ -19,44 +20,47 @@ const programmes = [
     title: "Beginners Classes",
     overview: "An entry point for students starting from letter recognition through to first steps in memorization. Every new student begins with a 2-month Tajweed onboarding phase before advancing to memorization training.",
     who: "New students with little or no prior Qur'an reading experience.",
-    payment: "Termly (a discounted Monthly plan is available to Nigerian residents)",
   },
   {
     id: "intermediate",
     title: "Intermediate Classes",
     overview: "Builds fluency, confidence, and consistency in memorization for students with a foundation already in place.",
     who: "Students who can read the Qur'an and have begun memorizing.",
-    payment: "Termly",
   },
   {
     id: "advanced",
     title: "Advanced Classes",
     overview: "Rigorous, closely supervised progression toward completing memorization of the full Qur'an.",
     who: "Students well into their memorization journey.",
-    payment: "Monthly",
   },
   {
     id: "private",
     title: "Private Classes",
     overview: "One-on-one personalized learning paced entirely around the student.",
     who: "Students or parents who prefer individual attention over group classes.",
-    payment: "Monthly",
   },
   {
     id: "muraajah",
     title: "Muraajah Classes",
     overview: "Dedicated revision and retention sessions to keep memorized portions strong.",
     who: "Students who have completed memorization or portions and need consistent revision.",
-    payment: "Monthly",
   },
   {
-    id: "tajweed",
+    id: "tajweed-private",
     title: "Private Tajweed",
     overview: "Focused, individual instruction in the rules of proper Qur'anic recitation.",
     who: "Students and adults wanting to correct or refine their recitation.",
-    payment: "Monthly",
   },
 ];
+
+// Payment cadence is looked up from PROGRAMMES (lib/programmes.ts) by id
+// rather than hardcoded a second time here, so a fee/billing-cycle change
+// (like the one that just happened) only ever needs to happen in one place.
+function paymentCadenceFor(id: string): string {
+  return PROGRAMMES.find((p) => p.id === id)?.billingCycle ?? "Termly";
+}
+
+
 
 export default function ProgrammesPage() {
   return (
@@ -125,15 +129,15 @@ export default function ProgrammesPage() {
                 </div>
                 <div>
                   <dt className="font-mono text-xs uppercase tracking-widest text-gold-dim">Duration</dt>
-                  <dd className="mt-1 text-sm text-navy/50">Placeholder — to be confirmed</dd>
+                  <dd className="mt-1 text-sm text-navy/50">15mins-30mins</dd>
                 </div>
                 <div>
                   <dt className="font-mono text-xs uppercase tracking-widest text-gold-dim">Class Format</dt>
-                  <dd className="mt-1 text-sm text-navy/50">Placeholder — physical / online / hybrid</dd>
+                  <dd className="mt-1 text-sm text-navy/50">Online</dd>
                 </div>
                 <div>
                   <dt className="font-mono text-xs uppercase tracking-widest text-gold-dim">Fees &amp; Schedule</dt>
-                  <dd className="mt-1 text-sm text-navy/70">{p.payment} payment &middot; timetable to be confirmed</dd>
+                  <dd className="mt-1 text-sm text-navy/70">{paymentCadenceFor(p.id)} payment &middot; timetable to be confirmed</dd>
                 </div>
               </dl>
 

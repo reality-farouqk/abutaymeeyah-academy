@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { StudentRegistration } from "@/lib/registrations-store";
 import { formatNaira } from "@/lib/programmes";
 import ReceiptView from "@/components/ReceiptView";
 
 export default function AdminRegistrationsPage() {
+  const router = useRouter();
   const [registrations, setRegistrations] = useState<StudentRegistration[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +19,11 @@ export default function AdminRegistrationsPage() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/registrations");
+      if (res.status === 401) {
+        // Session expired or was never established — back to login.
+        router.push("/admin/login?next=/admin/registrations");
+        return;
+      }
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to fetch registrations.");
       setRegistrations(data.registrations || []);
@@ -25,6 +32,11 @@ export default function AdminRegistrationsPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.push("/admin/login");
   };
 
   useEffect(() => {
@@ -84,7 +96,7 @@ export default function AdminRegistrationsPage() {
             <h1 className="font-display text-2xl text-navy">Student Registrations & Payments</h1>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <div className="bg-navy/5 px-4 py-2 rounded border border-navy/10 text-center">
               <p className="text-[10px] uppercase font-mono text-navy/60">Total Enrolled</p>
               <p className="font-display text-lg font-bold text-navy">{registrations.length}</p>
@@ -93,6 +105,12 @@ export default function AdminRegistrationsPage() {
               <p className="text-[10px] uppercase font-mono text-emerald-800">Verified Paid Revenue</p>
               <p className="font-display text-lg font-bold text-emerald-700">{formatNaira(totalRevenue)}</p>
             </div>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 rounded text-xs font-semibold text-navy/70 border border-navy/15 hover:bg-navy/5 transition-colors"
+            >
+              Log Out
+            </button>
           </div>
         </div>
 

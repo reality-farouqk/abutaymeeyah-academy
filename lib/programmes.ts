@@ -31,8 +31,8 @@ export const PROGRAMMES: Programme[] = [
     name: "Beginners Classes",
     subtitle: "Qa'idah & Introductory Qur'an",
     category: "O'Level",
-    fee: 25000,
-    billingCycle: "Termly",
+    fee: 7000,
+    billingCycle: "Monthly",
     registrationFee: 5000,
     scheduleOptions: [
       "Mon - Thu (4:00 PM - 6:00 PM)",
@@ -48,29 +48,14 @@ export const PROGRAMMES: Programme[] = [
       "Basic Islamic studies & Adab",
       "Termly assessment & progress report",
     ],
-    feePlans: [
-      {
-        id: "termly-standard",
-        label: "Termly (Standard)",
-        fee: 25000,
-        billingCycle: "Termly",
-      },
-      {
-        id: "monthly-ng",
-        label: "Monthly — Nigerian Residents Only",
-        fee: 7000,
-        billingCycle: "Monthly",
-        nigeriansOnly: true,
-      },
-    ],
   },
   {
     id: "intermediate",
     name: "Intermediate Classes",
     subtitle: "Qur'an Recitation & Hifzh Foundation",
     category: "O'Level",
-    fee: 35000,
-    billingCycle: "Termly",
+    fee: 10000,
+    billingCycle: "Monthly",
     registrationFee: 5000,
     scheduleOptions: [
       "Mon - Thu (4:30 PM - 6:30 PM)",
@@ -90,7 +75,7 @@ export const PROGRAMMES: Programme[] = [
     name: "Advanced Classes",
     subtitle: "Full Hifzh & Qira'at Specialization",
     category: "Advanced",
-    fee: 45000,
+    fee: 25000,
     billingCycle: "Termly",
     registrationFee: 5000,
     scheduleOptions: [
@@ -111,8 +96,8 @@ export const PROGRAMMES: Programme[] = [
     name: "Private Classes",
     subtitle: "1-on-1 Dedicated Tutor",
     category: "Private",
-    fee: 60000,
-    billingCycle: "Monthly",
+    fee: 45000,
+    billingCycle: "Termly",
     registrationFee: 10000,
     scheduleOptions: [
       "Flexible Weekday Evening Slots",
@@ -132,7 +117,7 @@ export const PROGRAMMES: Programme[] = [
     name: "Muraajah Classes",
     subtitle: "Qur'an Revision & Retention",
     category: "Advanced",
-    fee: 30000,
+    fee: 25000,
     billingCycle: "Termly",
     registrationFee: 5000,
     scheduleOptions: [
@@ -152,7 +137,7 @@ export const PROGRAMMES: Programme[] = [
     name: "Private Tajweed Masterclass",
     subtitle: "Theoretical & Practical Tajweed Mastery",
     category: "Private",
-    fee: 50000,
+    fee: 30000,
     billingCycle: "Monthly",
     registrationFee: 10000,
     scheduleOptions: [

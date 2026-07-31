@@ -388,19 +388,19 @@ function EnrollWizard() {
                     <button
                       onClick={handlePaystackPay}
                       disabled={paymentLoading}
-                      className="flex flex-col items-center justify-center p-5 rounded-sm border border-navy/20 bg-white hover:border-gold hover:bg-gold/5 transition-colors focus-ring"
+                      className="flex flex-col items-center justify-center p-5 rounded-sm border border-navy/20 bg-gold hover:border-gold hover:bg-amber-400 transition-colors focus-ring"
                     >
-                      <span className="font-display font-bold text-lg text-navy">Paystack</span>
-                      <span className="text-[11px] text-navy/60 mt-1">Cards, Bank Transfer, USSD</span>
+                      <span className="font-display font-bold text-lg text-white">Paystack</span>
+                      <span className="text-[11px] text-white/60 mt-1">Cards, Bank Transfer, USSD</span>
                     </button>
 
                     <button
                       onClick={handleFlutterwavePay}
                       disabled={paymentLoading}
-                      className="flex flex-col items-center justify-center p-5 rounded-sm border border-navy/20 bg-white hover:border-gold hover:bg-gold/5 transition-colors focus-ring"
+                      className="flex flex-col items-center justify-center p-5 rounded-sm border border-navy/20 bg-navy-deep hover:border-gold hover:bg-blue-900 transition-colors focus-ring"
                     >
-                      <span className="font-display font-bold text-lg text-navy">Flutterwave</span>
-                      <span className="text-[11px] text-navy/60 mt-1">Cards, Mobile Money, Transfers</span>
+                      <span className="font-display font-bold text-lg text-white">Flutterwave</span>
+                      <span className="text-[11px] text-white/60 mt-1">Cards, Mobile Money, Transfers</span>
                     </button>
                   </div>
 

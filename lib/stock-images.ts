@@ -74,9 +74,9 @@ export const learningPhotos: StockPhoto[] = [
     credit: "Alena Darmel / Pexels",
   },
   {
-    src: "https://images.pexels.com/photos/34488687/pexels-photo-34488687.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "A family reading the Qur'an together inside a mosque",
-    credit: "kopidikakigunung / Pexels",
+    src: "https://images.pexels.com/photos/28128042/pexels-photo-28128042.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "The Holy Quran",
+    credit: "Halid Elosman / Pexels",
   },
   {
     src: "https://images.pexels.com/photos/8164745/pexels-photo-8164745.jpeg?auto=compress&cs=tinysrgb&w=1200",
