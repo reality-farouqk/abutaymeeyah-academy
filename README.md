@@ -90,6 +90,79 @@ potentially exposed — consider rotating the Flutterwave secret key from
 your Flutterwave dashboard (Settings → API) once you're ready to go live,
 so only the new key ever touches your deployed environment.
 
+## Security
+
+A full audit was done against every API route and the hosting setup
+(Vercel). One critical issue and several high-priority ones were found and
+fixed; here's the record of what changed and why, plus what's still open.
+
+**Fixed — Critical:**
+- **Payment verification bypass.** `/api/payment/flutterwave/verify` and
+  `/api/payment/paystack/verify` fell through to auto-approving a payment
+  as "demo mode" whenever a transaction ID was missing or malformed —
+  including when real API keys *were* configured. In practice, anyone could
+  mark any registration `PAID` with a bare POST request and no real
+  transaction ID, live in production. Fixed: which branch runs now depends
+  only on whether live keys are configured (a server-side fact, not
+  anything the client controls) — see the `CRITICAL` comments in both route
+  files. The `/verify` routes also now re-check the paid amount and
+  currency against the stored registration, matching what the webhook
+  already did.
+- **Guessable registration references.** References were `ATA-` + a 6-digit
+  `Math.random()` number (900,000 possibilities, non-cryptographic RNG) —
+  used both as the lookup key for personal data and as what the bug above
+  let someone mark "paid." Now `crypto.randomBytes`-based, ~40 bits of
+  entropy (`lib/registrations-store.ts`).
+
+**Fixed — High:**
+- **Next.js was on 14.2.5, which reached end-of-life on Oct 26, 2025** — no
+  security patches since, including a class of middleware/proxy
+  authorization-bypass CVEs patched in 15.5.x/16.2.x that's directly
+  relevant here since `/admin` auth depends entirely on `middleware.ts`.
+  Bumped to `^15.5.0` (LTS) in `package.json`. **This couldn't be built or
+  tested in the environment these changes were made in (no network
+  access/npm install) — run `npm install && npm run build` locally before
+  deploying**, though the codebase was checked for the specific patterns
+  that break between Next 14 and 15 (async `cookies()`/`headers()`, async
+  page `params`/`searchParams` props) and uses none of them.
+- **No rate limiting** on registration creation, the status lookup, or
+  either gateway's `initialize`/`verify` routes. Added (`lib/rate-limit.ts`,
+  reused across all of them) — same best-effort, in-memory approach as the
+  admin login and contact form limits already in place; see that file's
+  comments for its limits on a serverless host.
+
+**Fixed — Medium (done while in the area):**
+- **Unvalidated `Origin` header** was used directly to build the payment
+  gateway's `redirect_url`/`callback_url`. A direct API call (not through
+  the browser) could set this to anything, redirecting a paying customer
+  to an attacker's domain right after a real payment. Fixed with an
+  origin allow-list (`getSafeOrigin` in `lib/site-config.ts`).
+- **No security headers were set.** Added, split across two places since
+  one needs to be dynamic and the rest don't:
+  - `next.config.mjs` — static headers on every response:
+    `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`,
+    `Permissions-Policy`, `Strict-Transport-Security`.
+  - `middleware.ts` — `Content-Security-Policy`, generated fresh per
+    request with a nonce (Next.js's documented pattern for this). The one
+    inline `<script>` in the app (the JSON-LD block in `app/layout.tsx`)
+    reads that nonce via `headers()`. Inline `style={{...}}` attributes
+    (e.g. the contact form's honeypot field) still need `style-src
+    'unsafe-inline'` — much lower risk than allowing it for scripts, which
+    this CSP does not do.
+- **Raw error messages were returned to the client** on ~9 routes (e.g.
+  `{ error: error.message }`), which can leak internal details to anyone
+  probing the API. All of them now log the real error server-side via
+  `console.error` and return a fixed, generic message to the client
+  instead.
+
+**Not yet done (Low from the audit — ask if you'd like these too):**
+- Rate limiting is in-memory per serverless instance — a deterrent, not a
+  real defense at scale. Consider Vercel's Firewall or
+  `@upstash/ratelimit` if abuse becomes a real problem.
+- Single shared `ADMIN_PASSWORD` — fine for one or two staff, worth
+  rotating periodically.
+- No automated dependency scanning — consider enabling Dependabot on the repo.
+
 ## Admin access
 
 `/admin/registrations` (and its API, `/api/admin/registrations`) previously

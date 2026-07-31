@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Amiri, Work_Sans, IBM_Plex_Mono } from "next/font/google";
+import { headers } from "next/headers";
 import './globals.css';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -87,16 +88,22 @@ const structuredData = {
   ...(SOCIAL_LINKS.length > 0 ? { sameAs: SOCIAL_LINKS } : {}),
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Set by middleware.ts on every request, alongside the matching
+  // Content-Security-Policy header — required for this inline script to be
+  // allowed to run under that policy.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html lang="en">
       <head>
         <script
           type="application/ld+json"
+          nonce={nonce}
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />

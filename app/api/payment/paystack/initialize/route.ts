@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRegistrationByReference } from "@/lib/registrations-store";
+import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
+import { getSafeOrigin } from "@/lib/site-config";
 
 export async function POST(req: NextRequest) {
   try {
+    const clientKey = getClientKey(req);
+    if (!checkRateLimit("paystack-init", clientKey, 10, 15 * 60 * 1000)) {
+      return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
+    }
+
     const { reference } = await req.json();
 
     if (!reference) {
@@ -15,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const paystackSecret = process.env.PAYSTACK_SECRET_KEY;
-    const origin = req.headers.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const origin = getSafeOrigin(req.headers.get("origin"));
     const callbackUrl = `${origin}/enroll?step=3&ref=${reference}&gateway=paystack`;
 
     // If live or test Paystack secret key is configured
@@ -63,8 +70,9 @@ export async function POST(req: NextRequest) {
       message: "Using simulated Paystack gateway for instant preview.",
     });
   } catch (error: any) {
+    console.error("Paystack initialize failed:", error?.message || error);
     return NextResponse.json(
-      { error: error?.message || "Failed to initialize Paystack payment." },
+      { error: "Failed to initialize Paystack payment." },
       { status: 500 }
     );
   }

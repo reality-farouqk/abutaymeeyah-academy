@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRegistrationByReference, getRegistrationsByEmail } from "@/lib/registrations-store";
+import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 
 export async function GET(req: NextRequest) {
   try {
+    const clientKey = getClientKey(req);
+    // This endpoint returns personal data by reference or email with no
+    // login required — rate limit it to slow down enumeration/brute-force
+    // attempts against either lookup path.
+    if (!checkRateLimit("registration-status", clientKey, 15, 10 * 60 * 1000)) {
+      return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
+    }
+
     const { searchParams } = new URL(req.url);
     const query = searchParams.get("query");
 
@@ -29,8 +38,9 @@ export async function GET(req: NextRequest) {
       { status: 404 }
     );
   } catch (error: any) {
+    console.error("Registration status lookup failed:", error?.message || error);
     return NextResponse.json(
-      { error: error?.message || "Failed to search registration status." },
+      { error: "Failed to search registration status." },
       { status: 500 }
     );
   }

@@ -5,9 +5,15 @@ import {
   saveRegistration,
   StudentRegistration,
 } from "@/lib/registrations-store";
+import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
+    const clientKey = getClientKey(req);
+    if (!checkRateLimit("registration-create", clientKey, 10, 15 * 60 * 1000)) {
+      return NextResponse.json({ error: "Too many registration attempts. Please try again shortly." }, { status: 429 });
+    }
+
     const body = await req.json();
     const {
       programmeId,
@@ -111,8 +117,9 @@ export async function POST(req: NextRequest) {
       registration: newRegistration,
     });
   } catch (error: any) {
+    console.error("Registration creation failed:", error?.message || error);
     return NextResponse.json(
-      { error: error?.message || "Failed to create registration." },
+      { error: "Failed to create registration." },
       { status: 500 }
     );
   }

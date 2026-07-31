@@ -6,10 +6,8 @@ export async function GET() {
     const list = getAllRegistrations();
     return NextResponse.json({ success: true, registrations: list });
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error?.message || "Failed to fetch registrations." },
-      { status: 500 }
-    );
+    console.error("Failed to fetch registrations:", error?.message || error);
+    return NextResponse.json({ error: "Failed to fetch registrations." }, { status: 500 });
   }
 }
 
@@ -37,9 +35,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ success: true, registration: updated });
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error?.message || "Failed to update registration payment status." },
-      { status: 500 }
-    );
+    console.error("Failed to update registration payment status:", error?.message || error);
+    return NextResponse.json({ error: "Failed to update registration payment status." }, { status: 500 });
   }
 }

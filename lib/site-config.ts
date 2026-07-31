@@ -23,3 +23,18 @@ export const CONTACT = {
 
 // Add real profiles here once they exist (used in JSON-LD "sameAs").
 export const SOCIAL_LINKS: string[] = [];
+
+// Origins allowed to be used when building payment gateway redirect URLs.
+// The Origin header on a request is fully attacker-controlled when the
+// request isn't made by a real browser on this site (e.g. a direct curl/API
+// call), so it must never be used unchecked to build a redirect_url handed
+// to Flutterwave/Paystack — that would let someone redirect a paying
+// customer to an arbitrary domain right after a real payment completes.
+const ALLOWED_ORIGINS = [SITE_URL, "http://localhost:3000"];
+
+export function getSafeOrigin(requestOrigin: string | null): string {
+  if (requestOrigin && ALLOWED_ORIGINS.includes(requestOrigin)) {
+    return requestOrigin;
+  }
+  return SITE_URL;
+}

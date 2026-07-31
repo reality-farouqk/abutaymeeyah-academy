@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 
 export interface StudentRegistration {
   reference: string;
@@ -141,6 +142,16 @@ export function updatePaymentStatus(
 }
 
 export function generateRegistrationReference(): string {
-  const random = Math.floor(100000 + Math.random() * 900000);
-  return `ATA-${random}`;
+  // Previously Math.random() over only 900,000 values — guessable, and not
+  // cryptographically random. This reference doubles as a lookup key for
+  // personal data (/admissions/status) and is checked against payment
+  // verification, so it needs to be hard to guess, not just unique.
+  // 10 uppercase hex characters ≈ 40 bits of entropy (~1 trillion values).
+  let reference: string;
+  let attempts = 0;
+  do {
+    reference = `ATA-${crypto.randomBytes(5).toString("hex").toUpperCase()}`;
+    attempts += 1;
+  } while (getRegistrationByReference(reference) && attempts < 5);
+  return reference;
 }

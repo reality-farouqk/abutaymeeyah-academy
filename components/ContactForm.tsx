@@ -60,6 +60,7 @@ export default function ContactForm() {
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
+          placeholder="Your full name"
           className="mt-1.5 w-full rounded-sm border border-navy/20 px-4 py-2.5 text-sm text-navy focus-ring outline-none"
         />
       </label>
@@ -70,6 +71,7 @@ export default function ContactForm() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.com"
           className="mt-1.5 w-full rounded-sm border border-navy/20 px-4 py-2.5 text-sm text-navy focus-ring outline-none"
         />
       </label>
@@ -80,6 +82,7 @@ export default function ContactForm() {
           required
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          placeholder="Tell us what you'd like to know — programmes, schedules, fees, or anything else."
           className="mt-1.5 w-full rounded-sm border border-navy/20 px-4 py-2.5 text-sm text-navy focus-ring outline-none"
         />
       </label>

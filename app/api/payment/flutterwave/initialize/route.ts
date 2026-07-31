@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRegistrationByReference } from "@/lib/registrations-store";
+import { checkRateLimit, getClientKey } from "@/lib/rate-limit";
+import { getSafeOrigin } from "@/lib/site-config";
 
 export async function POST(req: NextRequest) {
   try {
+    const clientKey = getClientKey(req);
+    if (!checkRateLimit("flw-init", clientKey, 10, 15 * 60 * 1000)) {
+      return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
+    }
+
     const { reference } = await req.json();
 
     if (!reference) {
@@ -15,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const flwSecret = process.env.FLUTTERWAVE_SECRET_KEY;
-    const origin = req.headers.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const origin = getSafeOrigin(req.headers.get("origin"));
     const redirectUrl = `${origin}/enroll?step=3&ref=${reference}&gateway=flutterwave`;
 
     if (flwSecret && !flwSecret.includes("xxxxxxxx")) {
@@ -65,8 +72,9 @@ export async function POST(req: NextRequest) {
       message: "Using simulated Flutterwave gateway for instant preview.",
     });
   } catch (error: any) {
+    console.error("Flutterwave initialize failed:", error?.message || error);
     return NextResponse.json(
-      { error: error?.message || "Failed to initialize Flutterwave payment." },
+      { error: "Failed to initialize Flutterwave payment." },
       { status: 500 }
     );
   }
